@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Maya 🎉</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Gloria+Hallelujah&family=Poppins:wght@300;500&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(120deg, #ffe4e1, #fff0f5);
+      overflow-x: hidden;
+      transition: all 0.3s ease-in-out;
+      position: relative;
+      color: #6b2c2c;
+    }
+    body.dark {
+      background: linear-gradient(120deg, #1e1e2f, #2a2a40);
+      color: #ffe4e1;
+    }
+    .lock-screen,
+    .slider,
+    .popup {
+      display: none;
+    }
+    .lock-screen.active,
+    .slider.active,
+    .popup.show {
+      display: flex;
+    }
+
+    .lock-screen {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 2rem;
+      color: #ff69b4;
+    }
+    .lock-screen h2 {
+      font-size: 2.5rem;
+      font-family: "Great Vibes", cursive;
+      margin-bottom: 1rem;
+      animation: pulse 2s infinite;
+    }
+    .lock-screen p {
+      font-family: "Gloria Hallelujah", cursive;
+      font-size: 1.2rem;
+    }
+    .lock-screen input {
+      font-size: 1.5rem;
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      border: 2px solid #ff69b4;
+      text-align: center;
+      width: 100px;
+      margin-top: 1rem;
+    }
+    .lock-screen button {
+      margin-top: 1rem;
+      background: linear-gradient(to right, #ff4b2b, #ff416c);
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 2rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .error-msg {
+      color: red;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    h1 {
+      font-family: "Great Vibes", cursive;
+      font-size: 3em;
+      text-align: center;
+      color: #ff4081;
+      margin-top: 1rem;
+    }
+    .quote {
+      text-align: center;
+      font-style: italic;
+      margin: 1rem auto;
+      max-width: 600px;
+      color: #cc3366;
+    }
+    .slider {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 1rem 4rem;
+      min-height: 100vh;
+      position: relative;
+   }
+    .section {
+      display: none;
+      padding: 2rem;
+      min-height: 60vh;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-family: "Gloria Hallelujah", cursive;
+      font-size: 1.4rem;
+      line-height: 1.6;
+      user-select: none;
+      max-width: 650px;
+      margin: 0 auto;
+      color: inherit;
+    }
+    body.dark .section {
+      color: #ffe4e1;
+    }
+    .section.active {
+      display: flex;
+      animation: fadeIn 1s ease;
+      flex-direction: column;
+    }
+/* Voice Slide Text */
+    .section p {
+      color: inherit;
+      user-select: none;
+    }
+    
+    #voiceBtn {
+      background: #ff80ab;
+      color: white;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 1rem;
+      cursor: pointer;
+      animation: pulse 1.8s infinite;
+      box-shadow: 0 0 8px #ff80ab;
+      font-family: "Gloria Hallelujah", cursive;
+      font-size: 1rem;
+      user-select: none;
+      transition: background 0.3s ease;
+      display: inline-block;
+      min-width: 140px;
+      margin: 0 auto;
+    }
+
+    #voiceBtn:hover,
+    #voiceBtn:focus {
+      background: #ff4b80;
+      outline: none;
+      box-shadow: 0 0 18px #ff4b80;
+    }
+
+    .reveal-btn {
+      margin-top: 3rem;
+      background: #ff80ab;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 1rem;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+      box-shadow: 0 0 10px #ff80ab;
+      font-family: "Gloria Hallelujah", cursive;
+      font-size: 1.1rem;
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px #ff80ab;
+      font-family: "Gloria Hallelujah", cursive;
+      z-index: 1002;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      max-width: 90vw;
+      max-height: 80vh;
+      overflow-y: auto;
+      color: #6b2c2c;
+    }
+    body.dark .popup {
+      background: #2a2a40;
+      color: #ffe4e1;
+      box-shadow: 0 0 25px #ff4b80;
+    }
+
+    .letter-text {
+      font-family: "Gloria Hallelujah", cursive;
+      font-size: 1.3rem;
+      line-height: 2rem;
+      white-space: pre-wrap;
+      overflow: hidden;
+      width: 100%;
+      max-width: 500px;
+      color: #6b2c2c;
+    }
+
+    body.dark .letter-text {
+      color: #ffe4e1;
+    }
+
+    .signature {
+      font-family: "Great Vibes", cursive;
+      font-size: 2rem;
+      margin-top: 2rem;
+      color: #ff69b4;
+      opacity: 0;
+      animation: signatureWrite 2.5s ease-out forwards;
+    }
+
+    @keyframes signatureWrite {
+      0% {
+        opacity: 0;
+        transform: translateX(-50px) scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    .popup button {
+      margin-top: 2rem;
+      padding: 0.4rem 1.2rem;
+      font-size: 0.9rem;
+      border-radius: 1rem;
+      background: #ff80ab;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-family: "Gloria Hallelujah", cursive;
+      transition: background 0.3s ease;
+    }
+
+    .popup button:hover,
+    .popup button:focus {
+      background: #ff4b80;
+      outline: none;
+    }
+
+    .next-btn {
+      position: fixed;
+      bottom: 1rem;
+      background: #ffb6c1;
+      color: #333;
+      padding: 0.8rem 1.2rem;
+      border: none;
+      border-radius: 1rem;
+      cursor: pointer;
+      z-index: 100;
+      font-family: "Poppins", sans-serif;
+      user-select: none;
+      transition: background 0.3s ease;
+      box-shadow: 0 0 6px #ffb6c1;
+    }
+
+    .next-btn:disabled {
+      background: #f0c5cb;
+      cursor: not-allowed;
+      box-shadow: none;
+      color: #999;
+    }
+
+    .next-btn:hover:not(:disabled),
+    .next-btn:focus:not(:disabled) {
+      background: #ff91a9;
+      outline: none;
+      box-shadow: 0 0 15px #ff91a9;
+    }
+
+    .toggle-theme {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: #ff4081;
+      color: #fff;
+      padding: 0.3rem 0.6rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      font-family: "Poppins", sans-serif;
+      z-index: 1001;
+      user-select: none;
+      transition: background 0.3s ease;
+      box-shadow: 0 0 6px #ff4081;
+    }
+
+    .toggle-theme:hover,
+    .toggle-theme:focus {
+      background: #e03070;
+      outline: none;
+      box-shadow: 0 0 16px #e03070;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 1rem;
+      font-size: 1rem;
+      color: #999;
+      user-select: none;
+    }
+       canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .heart,
+    .sparkle,
+    .snowflake {
+      position: fixed;
+      bottom: -20px;
+      font-size: 1.5rem;
+      animation: floatEffect 6s linear infinite;
+      pointer-events: none;
+      z-index: 10;
+      user-select: none;
+    }
+    .sparkle {
+      color: #ffd700;
+      animation-duration: 4s;
+    }
+    .snowflake {
+      color: #cceeff;
+      font-size: 1.2rem;
+      animation-duration: 7s;
+    }
+
+    @keyframes floatEffect {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+    .balloon {
+  position: fixed;
+  bottom: -100px;
+  font-size: 2rem;
+  animation: floatUp 10s linear infinite;
+  z-index: 5;
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-110vh) scale(1.2);
+    opacity: 0;
+  }
+}
+.shooting-star {
+  position: fixed;
+  top: -10px;
+  width: 2px;
+  height: 80px;
+  background: white;
+  opacity: 0.8;
+  transform: rotate(45deg);
+  z-index: 50;
+  animation: shoot 2s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes shoot {
+  0% {
+    transform: translate(0, 0) rotate(45deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(100vw, 100vh) rotate(45deg);
+    opacity: 0;
+  }
+}
+    .polaroid-wall {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .polaroid {
+      background: white;
+      padding: 0.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      width: 150px;
+      transform: rotate(var(--angle));
+      animation: floatPhoto 4s ease-in-out infinite alternate;
+    }
+    .polaroid img {
+      width: 100%;
+      border-radius: 0.5rem;
+    }
+    .polaroid p {
+      text-align: center;
+      margin-top: 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    @keyframes floatPhoto {
+      from { transform: rotate(var(--angle)) translateY(0px); }
+      to { transform: rotate(var(--angle)) translateY(-10px); }
+    }
+    
+.animated-listen {
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(79, 172, 254, 0.7);
+  animation: glowListen 1.8s infinite ease-in-out;
+}
+
+@keyframes glowListen {
+  0% {
+    box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 242, 254, 1);
+    transform: scale(1.07);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(79, 172, 254, 0.5);
+    transform: scale(1);
+  }
+}
+    .animated-unlock {
+  background: linear-gradient(45deg, #ff4b2b, #ff416c);
+  color: #fff;
+  border: none;
+  padding: 12px 30px;
+  font-size: 18px;
+  border-radius: 25px;
+  cursor: pointer;
+  animation: pulseUnlock 1.8s infinite;
+  box-shadow: 0 0 15px rgba(255, 65, 108, 0.7);
+  transition: all 0.3s ease;
+}
+
+@keyframes pulseUnlock {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(255, 65, 108, 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255, 65, 108, 1);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(255, 65, 108, 0.7);
+  }
+}
+.puzzle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  width: 300px;
+  height: 200px;
+  margin: 0 auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.puzzle-piece {
+ background-image: url('https://picsum.photos/id/1015/600/400'); /* Replace with real photo */
+  background-size: 300px 200px;
+  filter: blur(8px);
+  transition: filter 0.3s ease;
+  cursor: pointer;
+}
+
+.puzzle-piece.revealed {
+  filter: blur(0);
+  cursor: default;
+}
+
+.puzzle-message {
+  font-size: 1.8rem;
+  color: #ff4081;
+  font-family: 'Great Vibes', cursive;
+  text-align: center;
+  margin-top: 2rem;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.jar-container {
+  position: relative;
+  width: 300px;
+  margin: 2rem auto;
+}
+
+.jar-image {
+  width: 100%;
+  filter: drop-shadow(0 0 10px #ff80ab80);
+}
+
+.notes-container {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 60%;
+  height: 60%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.note {
+  background: #fff0f5;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  animation: floatNote 3s ease-in-out infinite;
+  box-shadow: 0 0 6px #ff80ab80;
+  transition: transform 0.2s;
+}
+
+.note:hover {
+  transform: scale(1.2);
+}
+
+@keyframes floatNote {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+.moment-popup {
+  margin-top: 1.5rem;
+  background: #fff0f5;
+  border: 2px dashed #ff80ab;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  display: none;
+  font-family: "Gloria Hallelujah", cursive;
+  color: #6b2c2c;
+  box-shadow: 0 0 12px rgba(255, 105, 180, 0.3);
+}
+
+.moment-popup button {
+  margin-top: 1rem;
+  background: #ff80ab;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 1rem;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.moment-popup button:hover {
+  background: #ff4b80;
+}
+.gift-box {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  margin: 2rem auto;
+  cursor: pointer;
+  animation: shakeBox 2s infinite;
+  transition: transform 0.3s;
+}
+
+.box-base,
+.box-lid {
+  width: 100%;
+  height: 100%;
+  background: #ff69b4;
+  border-radius: 10px;
+  position: absolute;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.box-lid {
+  top: -20px;
+  background: #ff85c1;
+  z-index: 2;
+  transition: transform 0.5s ease;
+}
+
+.ribbon {
+  position: absolute;
+  top: 0;
+  left: 45%;
+  width: 10%;
+  height: 100%;
+  background: white;
+  z-index: 3;
+  border-radius: 5px;
+}
+
+@keyframes shakeBox {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(2deg); }
+  50% { transform: rotate(-2deg); }
+  75% { transform: rotate(2deg); }
+}
+
+.gift-surprise {
+  display: none;
+  text-align: center;
+  animation: fadeInUp 1s ease;
+  margin-top: 2rem;
+}
+
+.gift-surprise img {
+  width: 180px;
+  margin-bottom: 1rem;
+}
+
+.gift-surprise p {
+  font-family: "Gloria Hallelujah", cursive;
+  font-size: 1.2rem;
+  color: #cc3366;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.heart-scan-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 2rem auto;
+  background: radial-gradient(circle at center, #ff99c8, #ff5c8a);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(255, 92, 138, 0.5);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.heart-shape {
+  position: absolute;
+  font-size: 4rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  color: white;
+  animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.scan-line {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.4);
+  z-index: 2;
+  animation: none;
+}
+
+@keyframes scanDown {
+  from { top: -100%; }
+  to { top: 100%; }
+}
+
+.heart-reveal {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  text-align: center;
+  display: none;
+  z-index: 3;
+}
+
+.heart-content {
+  color: #fff;
+  font-size: 1rem;
+  font-family: "Gloria Hallelujah", cursive;
+  animation: fadeInHeart 1.5s ease forwards;
+  white-space: pre-wrap;
+}
+
+@keyframes fadeInHeart {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.sky-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 2rem auto;
+  background: radial-gradient(circle at center, #0d0d1a, #000);
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(255,255,255,0.2);
+  cursor: pointer;
+}
+
+#constellationCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.sky-container p {
+  text-align: center;
+  font-family: "Gloria Hallelujah", cursive;
+}
+.draggable {
+  display: inline-block;
+  padding: 10px 15px;
+  background: #ff80ab;
+  color: white;
+  border-radius: 1rem;
+  margin: 5px;
+  cursor: grab;
+  font-family: "Gloria Hallelujah", cursive;
+}
+.love-letter {
+  position: fixed;
+  top: -50px;
+  font-size: 1.4rem;
+  animation: fallLetter 10s linear infinite;
+  pointer-events: none;
+  z-index: 10;
+  user-select: none;
+}
+
+@keyframes fallLetter {
+  0% { transform: translateY(-50px); opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+#potionBottle {
+  filter: drop-shadow(0 0 10px #ff80ab);
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+  </style>
+</head>
+<body>
+  <button class="toggle-theme" onclick="toggleTheme()" aria-label="Toggle light/dark theme">🌓</button>
+
+  <audio id="bgMusic" autoplay loop preload="auto" volume="0.3">
+     <source src="https://media.vocaroo.com/mp3/1glpG4bAIJcG" type="audio/mpeg">
+  </audio>
+
+  <!-- 🔐 Lock Screen -->
+  <div class="lock-screen active" id="lockScreen">
+    <h2>🔒 Secret Gateway</h2>
+    <p>Enter the code to unlock my heart 💕</p>
+    <input type="text" id="codeInput" maxlength="3" placeholder="💗💗💗" />
+    <br />
+    <button onclick="checkCode()">❤️ Unlock My Heart</button>
+    <p class="error-msg" id="errorMsg">❌ Wrong code, try again!</p>
+  </div>
+
+  <!-- 🎉 Main Content -->
+  <div class="slider" id="slider">
+    <h1>Happy Birthday Maya 🎉</h1>
+    <p class="quote">"You make the world brighter just by being in it."</p>
+
+    <!-- ❤️ Slides -->
+    <div class="section active">🎂 On this special day, the universe pauses to celebrate you. Your existence adds meaning to mine.</div>
+    <div class="section">🌌 You're not just beautiful on the outside, but breathtaking within. Today, we celebrate all that you are. 💖</div>
+    <div class="section">🌠 My world began spinning in color the day you walked into it. You are my life. 🥺</div>
+    <div class="section">🎶 Your laughter is the rhythm I live for. I'd write your name on every heartbeat. ❤️</div>
+    <div class="section">🦋 You are grace wrapped in stardust. I fall for you every single day. 🌷</div>
+
+    <!-- 🔊 Voice Message Slide -->
+    <div class="section">
+      <p style="font-size: 1.5rem;">🔊 Tap to hear my voice</p>
+      <p style="font-size: 1.2rem; margin-bottom: 2rem;">Thank you for being the most incredible person in my life. I love you beyond time, beyond everything 💕</p>
+      <button id="voiceBtn">▶️ Play Voice Message</button>
+      <audio id="voiceMsg" src="https://media.vocaroo.com/mp3/120RipGy1OQ0" type="audio/mpeg">></audio>
+    </div>
+
+    <!-- 🖼️ Polaroid Photo Wall -->
+   <div class="section">
+    <p style="font-size: 1.5rem;">🖼️ Our Memories Together</p>
+    <div class="polaroid-wall">
+      <div class="polaroid" style="--angle: -5deg;">
+        <img src="https://picsum.photos/id/1011/300/300" />
+        <p>First Smile</p>
+      </div>
+      <div class="polaroid" style="--angle: 3deg;">
+        <img src="https://picsum.photos/id/1025/300/300" />
+        <p>That Look 🥺</p>
+      </div>
+      <div class="polaroid" style="--angle: -2deg;">
+        <img src="https://picsum.photos/id/1005/300/300" />
+        <p>Forever Yours</p>
+      </div>
+      <div class="polaroid" style="--angle: 4deg;">
+        <img src="https://picsum.photos/id/1012/300/300" />
+        <p>Pure Bliss</p>
+      </div>
+      <div class="polaroid" style="--angle: -4deg;">
+        <img src="https://picsum.photos/id/1023/300/300" />
+        <p>My World</p>
+      </div>
+      <div class="polaroid" style="--angle: 6deg;">
+        <img src="https://picsum.photos/id/1035/300/300" />
+        <p>My Love</p>
+      </div>
+    </div>
+  </div>
+
+<!-- 📖 Flipbook Story Slide -->
+<div class="section">
+  <p style="font-size: 1.5rem;">📖 Our Little Love Story</p>
+  <div id="flipbookContainer" style="margin-top:1rem;">
+    <p id="storyPage" style="font-style: italic; font-size:1.2rem;">Once upon a time, two souls collided... 💫</p>
+    <button onclick="nextStoryPage()" style="margin-top:1rem; font-size:0.9rem;" class="animated-listen">➡️ Next Page</button>
+  </div>
+</div>
+
+    <!-- 🔐 Vault Slide -->
+    <div class="section" id="vaultSlide">
+      <p style="font-size: 1.3rem;">🔒 Enter code to unlock secret memories:</p>
+      <input type="password" id="vaultInput" maxlength="4" placeholder="****" style="padding:0.5rem; font-size:1.2rem;" />
+     <button onclick="checkVaultCode()" class="animated-unlock">🔓 Unlock</button>
+
+      <div id="vaultError" style="color:red; display:none;">Wrong code! Try again.</div>
+      <div id="vaultGallery" style="display:none; margin-top:2rem;">
+        <p>🎞️ Secret Memories</p>
+        <img src="https://picsum.photos/id/1040/300/200" />
+        <img src="https://picsum.photos/id/1050/300/200" />
+      </div>
+    </div>
+
+    <!-- 🎤 Voice to Text Magic -->
+    <div class="section">
+      <p style="font-size: 1.4rem;">🎤 Say Three Magical Words😘</p>
+      <button onclick="startVoice()" class="animated-listen">🎤 Start Listening</button>
+      <p id="voiceResult" style="margin-top: 1rem; font-style:italic;"></p>
+    </div>
+<!-- 🌟 Starlit Wishes Slide -->
+<div class="section">
+  <p style="font-size: 1.5rem;">🌟 Click a Star for a Wish</p>
+  <div style="display:flex; justify-content:center; gap:1rem; margin-top:1rem;">
+    <span onclick="revealWish(this)" style="font-size:2rem; cursor:pointer;">⭐</span>
+    <span onclick="revealWish(this)" style="font-size:2rem; cursor:pointer;">⭐</span>
+    <span onclick="revealWish(this)" style="font-size:2rem; cursor:pointer;">⭐</span>
+  </div>
+</div>
+
+    <!-- 💘 Why I Love You Randomizer -->
+    <div class="section">
+      <p style="font-size: 1.5rem;">💘 Why I Love You</p>
+      <button id="whyLoveBtn" style="margin-top: 1rem; font-size: 1rem; padding: 0.6rem 1rem; border-radius: 1rem; background: #ff80ab; color: white; font-family: 'Gloria Hallelujah', cursive; border: none; cursor: pointer;">💬 Tell Me❤️</button>
+      <p id="reasonText" style="margin-top: 1rem; font-size: 1.2rem; color: #cc3366;"></p>
+    </div>
+<!-- 🧩 Puzzle Piece Reveal -->
+<div class="section">
+  <p style="font-size: 1.5rem; margin-bottom: 1rem;">🧩 Puzzle Piece Reveal</p>
+  <div id="puzzleGrid" class="puzzle-grid"></div>
+  <p id="puzzleMessage" class="puzzle-message" style="display:none;">You complete me ❤️</p>
+</div>
+<!-- 🫙 Moments in a Jar Slide -->
+<div class="section">
+  <p style="font-size: 1.5rem;">🫙 Moments in a Jar</p>
+  <div class="jar-container">
+    <img src="https://i.ibb.co/Gkn4hF2/glass-jar.png" class="jar-image" alt="Memory Jar" />
+    <div class="notes-container">
+      <div class="note" onclick="showMoment(0)">💌</div>
+      <div class="note" onclick="showMoment(1)">💬</div>
+      <div class="note" onclick="showMoment(2)">💖</div>
+      <div class="note" onclick="showMoment(3)">💭</div>
+      <div class="note" onclick="showMoment(4)">📝</div>
+    </div>
+  </div>
+  <div id="momentPopup" class="moment-popup">
+    <p id="momentText"></p>
+    <button onclick="closeMoment()">Close</button>
+  </div>
+</div>
+<!-- 🎁 Gift Unboxing Animation -->
+<div class="section">
+  <p style="font-size: 1.5rem;">🎁 Tap to Unbox Your Surprise!</p>
+  <div class="gift-box" onclick="openGift()">
+    <div class="box-lid"></div>
+    <div class="box-base"></div>
+    <div class="ribbon"></div>
+  </div>
+  <div class="gift-surprise" id="giftSurprise">
+    <img src="https://i.ibb.co/0fTwjQX/couple-gift.png" alt="Surprise" />
+    <p>Surprise! You are my most precious gift ever 💝</p>
+  </div>
+</div>
+<!-- ❤️ What's in My Heart Scan -->
+<div class="section">
+  <p style="font-size: 1.5rem;">🫀 What’s in My Heart?</p>
+  <div class="heart-scan-container" onclick="startHeartScan()">
+    <div class="heart-shape">❤️</div>
+    <div class="scan-line" id="scanLine"></div>
+    <div class="heart-reveal" id="heartReveal">
+      <div class="heart-content">
+        maya 💗 maya 💗 maya 💗 maya 💗 maya 💗 maya 💗 maya 💗 maya 💗 maya 💗
+      </div>
+    </div>
+  </div>
+</div>
+    
+ <div class="section">
+  <p style="font-size: 1.4rem;">🌎 Your Name in Every Language</p>
+  <ul style="margin-top: 1rem; list-style: none; font-size: 1.2rem;">
+    <li>Hindi: माया</li>
+    <li>French: Maya</li>
+    <li>Japanese: マヤ</li>
+    <li>Arabic: مايا</li>
+    <li>Korean: 마야</li>
+    <li>Chinese: 玛雅</li>
+    <li>Russian: Майя</li>
+    <li>Greek: Μάγια</li>
+    <li>Hebrew: מאיה</li>
+    <li>Latin: Maia</li>
+  </ul>
+</div>
+
+<div class="section">
+  <p style="font-size: 1.4rem;">🏡 Build Our House</p>
+  <div id="buildArea" style="min-height: 200px; border: 2px dashed #ccc; margin-top: 1rem; padding: 10px;"></div>
+  <div style="margin-top:1rem;">
+    <div class="draggable" draggable="true">❤️ Love</div>
+    <div class="draggable" draggable="true">🏡 Home</div>
+    <div class="draggable" draggable="true">🧱 Trust</div>
+    <div class="draggable" draggable="true">🫂 Together</div>
+  </div>
+</div> 
+<!-- 🧪 Love Potion Mixing Lab -->
+<div class="section" id="potionLab">
+  <h2 style="font-family: 'Great Vibes', cursive;">🧪 Love Potion Mixing Lab</h2>
+  <p style="margin-top: 1rem;">Mix ingredients to create your perfect love potion for Maya 💘</p>
+
+  <div style="margin-top:1.2rem; line-height: 2;">
+    <label><input type="checkbox" class="potion-item" value="Trust"> 🤝 Trust</label><br/>
+    <label><input type="checkbox" class="potion-item" value="Cuddles"> 🫂 Cuddles</label><br/>
+    <label><input type="checkbox" class="potion-item" value="Laughter"> 😂 Laughter</label><br/>
+    <label><input type="checkbox" class="potion-item" value="Memories"> 🌅 Memories</label><br/>
+    <label><input type="checkbox" class="potion-item" value="Inside Jokes"> 🤭 Inside Jokes</label><br/>
+    <label><input type="checkbox" class="potion-item" value="Passion"> 🔥 Passion</label><br/>
+    <label><input type="checkbox" class="potion-item" value="Magic Kisses"> 💋 Magic Kisses</label><br/>
+  </div>
+
+  <button onclick="mixPotion()" class="animated-listen" style="margin-top: 1.8rem;">🔮 Mix Potion</button>
+  <!-- 🧪 Glowing Potion Bottle -->
+<div style="margin-top:2rem; display:flex; justify-content:center;">
+  <svg id="potionBottle" width="120" height="180" viewBox="0 0 120 180" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="potionGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#ff80ab" stop-opacity="1" />
+        <stop offset="100%" stop-color="#ff4081" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+    <circle cx="60" cy="90" r="45" fill="url(#potionGlow)" opacity="0.4">
+      <animate attributeName="opacity" values="0.4;0.8;0.4" dur="2s" repeatCount="indefinite" />
+    </circle>
+    <path d="M45 10 H75 V30 A30 30 0 0 1 90 60 L90 110 A30 30 0 0 1 30 110 L30 60 A30 30 0 0 1 45 30 Z" 
+          fill="#ff80ab" stroke="#cc3366" stroke-width="2" />
+    <circle cx="60" cy="75" r="5" fill="white" opacity="0.7">
+      <animate attributeName="cy" values="75;70;75" dur="1s" repeatCount="indefinite"/>
+    </circle>
+  </svg>
+</div>
+
+
+  <div id="potionResult" style="margin-top: 2rem; font-size: 1.3rem; font-style: italic; color: #d63384;"></div>
+</div>
+
+<div class="section">
+  <p style="font-size: 1.5rem;">💭 Dreaming with You</p>
+  <p style="margin-top: 1rem; font-style: italic;">
+    Last night, I dreamed of a world where only you and I existed — under galaxies, whispering forever, wrapped in peace.
+    We danced barefoot under stardust. You smiled. I woke up smiling.
+  </p>
+</div>
+  <!-- 🌌 Constellation of Us Slide -->
+<div class="section">
+  <p style="font-size: 1.5rem;">🌌 Our Stars Were Meant to Align</p>
+  <div class="sky-container" onclick="drawConstellation()">
+    <canvas id="constellationCanvas" width="300" height="300"></canvas>
+    <p id="constellationMessage" style="display:none; font-size: 1.2rem; margin-top: 1rem; color: #ffccff;">
+      Even the stars know... we were written in the same sky ✨
+    </p>
+  </div>
+</div>
+
+    <!-- 💌 Final Slide -->
+    <div class="section">
+      With all my heart and soul, forever yours,<br /><strong>sparsh</strong> 💌
+      <div style="margin-top: 2rem">
+        <button class="reveal-btn" onclick="showPopup(); firework()">💌 Reveal Love Letter 💌</button>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <button class="next-btn" style="left: 1rem" onclick="prevSlide()" id="prevBtn">⬅️ Prev</button>
+    <button class="next-btn" style="right: 1rem" onclick="nextSlide()" id="nextBtn">Next ➡️</button>
+
+    <div class="footer">© 2025 Made with ❤️ by Sparsh</div>
+  </div>
+<!-- 💌 Love Letter Popup -->
+<div class="popup" id="popup">
+  <div class="letter-text" id="typedText"></div>
+  <span id="signature" class="signature" style="display: none;">— sparsh 💌</span>
+  <button onclick="hidePopup()">Close</button>
+</div>
+
+<!-- 🎉 Confetti Canvas -->
+<canvas id="confettiCanvas"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+<!-- 💖 JavaScript for Functionality -->
+<script>
+  const sections = document.querySelectorAll(".section");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const voiceBtn = document.getElementById("voiceBtn");
+  const voiceMsg = document.getElementById("voiceMsg");
+  const bgMusic = document.getElementById("bgMusic");
+  let current = 0;
+
+  function checkCode() {
+    const code = document.getElementById("codeInput").value.trim();
+    if (code === "143") {
+      document.getElementById("lockScreen").classList.remove("active");
+      document.getElementById("slider").classList.add("active");
+      document.getElementById("errorMsg").style.display = "none";
+      playBgMusic();
+      showSlide(0);
+      updateNavButtons();
+    } else {
+      document.getElementById("errorMsg").style.display = "block";
+    }
+  }
+function showSlide(index) {
+  current = index;
+  sections.forEach((s, i) => s.classList.toggle("active", i === index));
+  updateNavButtons();
+  sections[current].focus();
+
+  // 🎊 Trigger final confetti on last slide
+  if (current === sections.length - 1) {
+    firework(); // Reuse your existing confetti function
+  }
+}
+
+
+  function nextSlide() {
+    if (current < sections.length - 1) {
+      current++;
+      showSlide(current);
+    }
+  }
+
+  function prevSlide() {
+    if (current > 0) {
+      current--;
+      showSlide(current);
+    }
+  }
+
+  function updateNavButtons() {
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === sections.length - 1;
+  }
+
+  function showPopup() {
+    const popup = document.getElementById("popup");
+    const target = document.getElementById("typedText");
+    const signature = document.getElementById("signature");
+    popup.classList.add("show");
+    target.innerText = "";
+    signature.style.display = "none";
+    const text = `Dear Maya,\n\nYour love is the light in my world. Every second with you is magic.\nI promise to love you beyond limits. 💖`;
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        target.innerText += text.charAt(i);
+        i++;
+        setTimeout(type, 50);
+      } else {
+        setTimeout(() => {
+          signature.style.display = "inline-block";
+        }, 300);
+      }
+    }
+    setTimeout(type, 200);
+    pauseBgMusic();
+  }
+
+  function hidePopup() {
+    document.getElementById("popup").classList.remove("show");
+    playBgMusic();
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle("dark");
+  }
+
+  function firework() {
+  confetti({
+    particleCount: 300,
+    spread: 120,
+    startVelocity: 30,
+    origin: { y: 0.5 },
+    colors: ["#ff4b2b", "#ff80ab", "#ffd700", "#ffffff"]
+  });
+}
+
+const memoryMoments = [
+  "The day we first talked — I knew something magical had started. ✨",
+  "That time you laughed so hard, I couldn't stop smiling. 😄",
+  "Cuddles on tough days — you’re my comfort. 🫂",
+  "Every ‘good night’ from you feels like a lullaby. 🌙",
+  "When you looked into my eyes… I saw forever. 👀❤️"
+];
+
+function showMoment(index) {
+  const popup = document.getElementById("momentPopup");
+  const text = document.getElementById("momentText");
+  text.innerText = memoryMoments[index];
+  popup.style.display = "block";
+}
+
+function closeMoment() {
+  document.getElementById("momentPopup").style.display = "none";
+}
+
+  function spawnEffect(type, char) {
+    const el = document.createElement("div");
+    el.className = type;
+    el.textContent = char;
+    el.style.left = Math.random() * 100 + "vw";
+    el.style.animationDuration = 5 + Math.random() * 3 + "s";
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 8000);
+  }
+let isGiftOpened = false;
+
+function openGift() {
+  if (isGiftOpened) return;
+  const lid = document.querySelector(".box-lid");
+  const surprise = document.getElementById("giftSurprise");
+  lid.style.transform = "translateY(-120px) rotate(25deg)";
+  document.querySelector(".gift-box").style.animation = "none";
+  surprise.style.display = "block";
+  isGiftOpened = true;
+}
+function startHeartScan() {
+  const scanLine = document.getElementById("scanLine");
+  const reveal = document.getElementById("heartReveal");
+
+  scanLine.style.animation = "scanDown 2s ease-in-out";
+
+  setTimeout(() => {
+    scanLine.style.animation = "none";
+    reveal.style.display = "block";
+  }, 2000);
+}
+
+  // Floating visual effects
+  setInterval(() => spawnEffect("heart", "💗"), 1200);
+  setInterval(() => spawnEffect("sparkle", "✨"), 1800);
+  setInterval(() => spawnEffect("snowflake", "❄️"), 2200);
+
+  function spawnBalloon() {
+    const b = document.createElement("div");
+    b.className = "balloon";
+    b.textContent = "🎈";
+    b.style.left = Math.random() * 90 + "vw";
+    b.style.animationDuration = 9 + Math.random() * 4 + "s";
+    document.body.appendChild(b);
+    setTimeout(() => b.remove(), 12000);
+  }
+  setInterval(spawnBalloon, 5000);
+
+  function spawnShootingStar() {
+    if (!document.body.classList.contains("dark")) return;
+    const star = document.createElement("div");
+    star.className = "shooting-star";
+    star.style.left = Math.random() * window.innerWidth + "px";
+    document.body.appendChild(star);
+    setTimeout(() => star.remove(), 2200);
+  }
+  setInterval(spawnShootingStar, 7000);
+
+  voiceBtn.addEventListener("click", () => {
+    if (voiceMsg.paused) {
+      voiceMsg.play();
+      bgMusic.pause();
+      voiceBtn.textContent = "⏸️ Pause Voice Message";
+    } else {
+      voiceMsg.pause();
+      bgMusic.play();
+      voiceBtn.textContent = "▶️ Play Voice Message";
+    }
+  });
+
+  voiceMsg.addEventListener("ended", () => {
+    bgMusic.play();
+    voiceBtn.textContent = "▶️ Play Voice Message";
+  });
+
+  function pauseBgMusic() {
+    if (!bgMusic.paused) bgMusic.pause();
+  }
+
+  function playBgMusic() {
+    if (bgMusic.paused) bgMusic.play();
+  }
+
+function spawnLoveLetter() {
+  const msg = ["💌 I love you", "You’re my world", "Forever Yours", "My Maya 💖"];
+  const letter = document.createElement("div");
+  letter.className = "love-letter";
+  letter.style.left = Math.random() * 90 + "vw";
+  letter.textContent = msg[Math.floor(Math.random() * msg.length)];
+  letter.style.animationDuration = 6 + Math.random() * 4 + "s";
+  document.body.appendChild(letter);
+  setTimeout(() => letter.remove(), 10000);
+}
+setInterval(spawnLoveLetter, 3000);
+document.querySelectorAll(".draggable").forEach(el => {
+  el.addEventListener("dragstart", e => {
+    e.dataTransfer.setData("text/plain", e.target.innerText);
+  });
+});
+
+// Mobile touch support
+document.querySelectorAll(".draggable").forEach(el => {
+  el.addEventListener("touchstart", e => {
+    el.classList.add("dragging");
+  });
+  el.addEventListener("touchend", e => {
+    const touch = e.changedTouches[0];
+    const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (dropTarget && dropTarget.id === "buildArea") {
+      const block = document.createElement("div");
+      block.innerText = el.innerText;
+      block.className = "draggable";
+      block.style.cursor = "default";
+      dropTarget.appendChild(block);
+    }
+    el.classList.remove("dragging");
+  });
+});
+
+
+function mixPotion() {
+  const selected = document.querySelectorAll('.potion-item:checked');
+  const result = document.getElementById('potionResult');
+  const bottle = document.getElementById('potionBottle');
+
+  if (selected.length === 0) {
+    result.innerText = "Please choose some magical ingredients first ✨";
+    return;
+  }
+
+  let ingredients = Array.from(selected).map(i => i.value).join(', ');
+
+  // Glow animation pulse
+  bottle.style.transform = "scale(1.2)";
+  bottle.style.transition = "transform 0.4s ease";
+  setTimeout(() => bottle.style.transform = "scale(1)", 400);
+
+  result.innerHTML = `
+    🧪 You mixed: <strong>${ingredients}</strong><br/>
+    🌟 The potion bubbles, sparkles, and glows...<br/><br/>
+    💖 This potion is called:<br/>
+    <span style="font-size: 1.5rem; font-weight: bold; color: #ff4081; animation: glowPotion 2s infinite;">
+      Eternal Love ❤️<br/>— brewed by Sparsh, just for Maya
+    </span>
+  `;
+
+  firework();
+}
+
+const storyPages = [
+  "Once upon a time, two souls collided... 💫",
+  "From laughter to tears, they shared everything 🥺",
+  "They became each other’s home 🏠💖",
+  "And now, they write their forever together ✍️❤️",
+  "The End? No... This is just the beginning. 🌌"
+];
+let storyIndex = 0;
+function nextStoryPage() {
+  storyIndex = (storyIndex + 1) % storyPages.length;
+  const page = document.getElementById("storyPage");
+  if (page) {
+    page.innerText = storyPages[storyIndex];
+  }
+}
+
+function revealWish(el) {
+  const wishes = [
+    "I wish to hold your hand forever 💕",
+    "I wish every day starts with your smile ☀️",
+    "I wish to grow old with you 🌸"
+  ];
+  el.textContent = wishes[Math.floor(Math.random() * wishes.length)];
+}
+function createPuzzleGrid() {
+  const grid = document.getElementById("puzzleGrid");
+  const total = 9;
+  let revealedCount = 0;
+
+  for (let i = 0; i < total; i++) {
+    const piece = document.createElement("div");
+    piece.className = "puzzle-piece";
+    const x = -(i % 3) * 100; // X offset
+    const y = -Math.floor(i / 3) * 66.67; // Y offset
+    piece.style.backgroundPosition = `${x}px ${y}px`;
+
+    piece.addEventListener("click", () => {
+      if (!piece.classList.contains("revealed")) {
+        piece.classList.add("revealed");
+        revealedCount++;
+        if (revealedCount === total) {
+          document.getElementById("puzzleMessage").style.display = "block";
+        }
+      }
+    });
+
+    grid.appendChild(piece);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", createPuzzleGrid);
+
+  // Voice-to-text magic
+ async function startVoice() {
+  const output = document.getElementById("voiceResult");
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    output.innerText = "❌ Voice recognition is not supported on this device/browser.";
+    return;
+  }
+
+  try {
+    // Force mic permission for mobile devices
+    await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (err) {
+    output.innerText = "❌ Microphone permission denied. Please allow access and try again.";
+    console.error("Microphone permission error:", err);
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "en-US";
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+  output.innerText = "🎤 Listening... please say something 💖";
+
+  recognition.onstart = () => {
+    console.log("Voice recognition started");
+  };
+
+  recognition.onresult = function (event) {
+    const text = event.results[0][0].transcript;
+    output.innerText = `You said: "${text}" 💬\nAnd my heart replied: I love you too ❤️`;
+  };
+
+  recognition.onerror = function (event) {
+    console.error("Voice recognition error:", event.error);
+    output.innerText = "⚠️ Voice recognition failed. Please try again or check mic permissions.";
+  };
+
+  recognition.onend = function () {
+    console.log("Recognition ended");
+  };
+
+  try {
+    recognition.start();
+  } catch (e) {
+    console.error("Recognition start error:", e);
+    output.innerText = "⚠️ Could not start recognition. Try again.";
+  }
+}
+
+function drawConstellation() {
+  const canvas = document.getElementById("constellationCanvas");
+  const ctx = canvas.getContext("2d");
+
+  // Set responsive dimensions
+  canvas.width = window.innerWidth * 0.9;
+  canvas.height = window.innerHeight * 0.25;
+
+  const W = canvas.width;
+  const H = canvas.height;
+
+  // Scale factor for X and Y
+  const xScale = W / 600;  // base width 600
+  const yScale = H / 100;  // base height 100
+
+  // Letters: "SPARSH ❤️ MAYA" scaled manually
+  const baseStars = [
+    // S
+    { x: 30, y: 40 }, { x: 50, y: 30 }, { x: 70, y: 40 }, { x: 60, y: 50 }, { x: 40, y: 60 },
+    // P
+    { x: 100, y: 30 }, { x: 100, y: 60 }, { x: 120, y: 30 }, { x: 120, y: 45 }, { x: 100, y: 45 },
+    // A
+    { x: 150, y: 60 }, { x: 160, y: 30 }, { x: 170, y: 60 }, { x: 155, y: 45 }, { x: 165, y: 45 },
+    // R
+    { x: 190, y: 30 }, { x: 190, y: 60 }, { x: 210, y: 30 }, { x: 210, y: 45 }, { x: 190, y: 45 }, { x: 215, y: 60 },
+    // S
+    { x: 240, y: 40 }, { x: 260, y: 30 }, { x: 280, y: 40 }, { x: 270, y: 50 }, { x: 250, y: 60 },
+    // H
+    { x: 300, y: 30 }, { x: 300, y: 60 }, { x: 300, y: 45 }, { x: 320, y: 45 }, { x: 320, y: 30 }, { x: 320, y: 60 },
+    // Heart ❤️
+    { x: 350, y: 45 },
+    // M
+    { x: 390, y: 60 }, { x: 390, y: 30 }, { x: 400, y: 45 }, { x: 410, y: 30 }, { x: 410, y: 60 },
+    // A
+    { x: 440, y: 60 }, { x: 450, y: 30 }, { x: 460, y: 60 }, { x: 445, y: 45 }, { x: 455, y: 45 },
+    // Y
+    { x: 480, y: 30 }, { x: 490, y: 45 }, { x: 500, y: 30 }, { x: 490, y: 45 }, { x: 490, y: 60 },
+    // A
+    { x: 530, y: 60 }, { x: 540, y: 30 }, { x: 550, y: 60 }, { x: 535, y: 45 }, { x: 545, y: 45 }
+  ];
+
+  const stars = baseStars.map(star => ({
+    x: star.x * xScale,
+    y: star.y * yScale
+  }));
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  let i = 0;
+
+  function animateStars() {
+    if (i < stars.length) {
+      const star = stars[i];
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = "#fff";
+      ctx.fill();
+
+      // Connect lines if not letter break
+      if (
+        i > 0 &&
+        ![5, 10, 15, 21, 27, 33, 34, 39, 44, 49].includes(i)
+      ) {
+        const prev = stars[i - 1];
+        ctx.beginPath();
+        ctx.moveTo(prev.x, prev.y);
+        ctx.lineTo(star.x, star.y);
+        ctx.strokeStyle = "#ff80ab";
+        ctx.stroke();
+      }
+
+      i++;
+      setTimeout(animateStars, 120);
+    } else {
+      document.getElementById("constellationMessage").style.display = "block";
+    }
+  }
+
+  animateStars();
+}
+
+
+  // Vault memory unlock
+  function checkVaultCode() {
+    const input = document.getElementById("vaultInput").value;
+    const error = document.getElementById("vaultError");
+    const gallery = document.getElementById("vaultGallery");
+    if (input === "3107") {
+      error.style.display = "none";
+      gallery.style.display = "block";
+    } else {
+      error.style.display = "block";
+      gallery.style.display = "none";
+    }
+  }
+const loveBtn = document.getElementById("whyLoveBtn");
+const reasonText = document.getElementById("reasonText");
+const reasons = [
+  "Because your smile makes everything better 😍",
+  "Because you understand me like no one else 🤗",
+  "Because you make every moment magical ✨",
+  "Because you're my safe place and my biggest adventure ❤️",
+  "Because loving you is the easiest thing I've ever done 💖",
+  "Because you bring peace to my chaos 🌸",
+  "Because even your silence is comforting to me 🫂",
+  "Because I see forever in your eyes 👀💞",
+  "Because you make me want to be the best version of myself 🌟",
+  "Because you’re my home, my heart, my everything 🏠💘"
+];
+
+if (loveBtn && reasonText) {
+  loveBtn.addEventListener("click", () => {
+    const randomReason = reasons[Math.floor(Math.random() * reasons.length)];
+    reasonText.innerText = randomReason;
+  });
+}
+
+
+  // Keyboard navigation
+  document.addEventListener("keydown", (e) => {
+    if (document.getElementById("lockScreen").classList.contains("active")) return;
+    if (e.key === "ArrowRight") nextSlide();
+    else if (e.key === "ArrowLeft") prevSlide();
+    else if (e.key === "Escape" && document.getElementById("popup").classList.contains("show")) hidePopup();
+    else if (e.key === "Enter" && document.getElementById("lockScreen").classList.contains("active")) checkCode();
+  });
+
+  // Initialize
+  updateNavButtons();
+</script>
+</body>
+</html>
